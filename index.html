@@ -1,98 +1,102 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع تحويل النص إلى صوت</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 10px 0;
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            padding: 5px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-        textarea {
-            width: 80%;
-            height: 150px;
-            margin-top: 20px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        #status {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #007bff;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text-to-Speech</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+      text-align: center;
+    }
+    header {
+      background-color: #6200ea;
+      color: #fff;
+      padding: 20px;
+    }
+    main {
+      margin: 20px;
+    }
+    textarea {
+      width: 80%;
+      height: 150px;
+      margin-bottom: 20px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    select, button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
+    }
+    button {
+      background-color: #6200ea;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #4500b5;
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>Text-to-Speech Application</h1>
+  </header>
+  <main>
+    <textarea id="text" placeholder="Type your text here..."></textarea>
+    <br>
+    <select id="voiceSelect"></select>
+    <br>
+    <button id="speakBtn">Speak</button>
+    <button id="stopBtn">Stop</button>
+  </main>
 
-    <!-- قسم الرأس Header -->
-    <header>
-        <h1>موقع تحويل النص إلى صوت</h1>
-        <p>اكتب النص في المربع أدناه لتحويله إلى صوت.</p>
-    </header>
+  <script>
+    const textArea = document.getElementById('text');
+    const voiceSelect = document.getElementById('voiceSelect');
+    const speakBtn = document.getElementById('speakBtn');
+    const stopBtn = document.getElementById('stopBtn');
 
-    <!-- واجهة إدخال النص -->
-    <textarea id="text-input" placeholder="اكتب النص هنا..."></textarea><br>
+    let voices = [];
+    const synth = window.speechSynthesis;
 
-    <!-- زر لتحويل النص إلى صوت -->
-    <button onclick="speakText()">تحويل النص إلى صوت</button>
+    const populateVoices = () => {
+      voices = synth.getVoices();
+      voiceSelect.innerHTML = voices
+        .map((voice, index) => `<option value="${index}">${voice.name} (${voice.lang})</option>`)
+        .join('');
+    };
 
-    <!-- عرض حالة التحويل -->
-    <p id="status">الرجاء إدخال النص والضغط على الزر لتحويله.</p>
+    const speak = () => {
+      if (synth.speaking) {
+        console.error('Already speaking...');
+        return;
+      }
+      if (textArea.value !== '') {
+        const utterThis = new SpeechSynthesisUtterance(textArea.value);
+        const selectedVoice = voices[voiceSelect.value];
+        utterThis.voice = selectedVoice;
+        synth.speak(utterThis);
+      }
+    };
 
-    <!-- قسم الفوتر Footer -->
-    <footer>
-        <p>حقوق النشر © 2024 جميع الحقوق محفوظة.</p>
-    </footer>
+    const stop = () => {
+      synth.cancel();
+    };
 
-    <!-- كود JavaScript -->
-    <script>
-        // دالة لتحويل النص إلى صوت
-        function speakText() {
-            const text = document.getElementById("text-input").value; // أخذ النص من الـ textarea
-            const speech = new SpeechSynthesisUtterance(text); // إنشاء الكائن الذي يمثل الصوت
+    populateVoices();
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = populateVoices;
+    }
 
-            // تحديد اللغة العربية
-            speech.lang = "ar-SA"; // اللغة العربية (السعودية)، يمكنك تغييرها إذا أردت لهجة مختلفة
-
-            // بدأ التحويل إلى صوت
-            window.speechSynthesis.speak(speech);
-
-            // تحديث النص ليعرض حالة التحويل
-            document.getElementById("status").innerText = "تم تحويل النص إلى صوت بنجاح!";
-        }
-    </script>
-
+    speakBtn.addEventListener('click', speak);
+    stopBtn.addEventListener('click', stop);
+  </script>
 </body>
 </html>
