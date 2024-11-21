@@ -3,58 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Advanced Text-to-Speech</title>
+  <title>Text-to-Speech with Advanced Features</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      background: #f4f4f4;
-      padding: 20px;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
     }
     .container {
       max-width: 600px;
-      margin: auto;
-      background: #fff;
+      margin: 50px auto;
+      background: #ffffff;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
     }
     textarea {
       width: 100%;
       height: 100px;
       padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
       font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      resize: none;
     }
     select, button {
       padding: 10px;
-      margin: 5px;
       font-size: 16px;
-      border-radius: 5px;
+      margin: 5px;
       border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
     }
     button {
-      cursor: pointer;
-      background: #007bff;
-      color: #fff;
+      background-color: #007bff;
+      color: #ffffff;
       border: none;
     }
     button:hover {
-      background: #0056b3;
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Text-to-Speech Converter</h1>
+    <h1>Advanced Text-to-Speech Tool</h1>
     <textarea id="text" placeholder="Type your text here..."></textarea>
     <br>
-    <label for="voiceSelect">Choose Voice:</label>
+    <label for="voiceSelect">Select Voice:</label>
     <select id="voiceSelect"></select>
     <br>
-    <label for="emotionSelect">Choose Emotion:</label>
+    <label for="emotionSelect">Select Emotion:</label>
     <select id="emotionSelect">
       <option value="default">Default</option>
       <option value="happy">Happy</option>
@@ -67,14 +74,14 @@
   </div>
 
   <script>
-    // Initialize variables
     const textInput = document.getElementById('text');
     const voiceSelect = document.getElementById('voiceSelect');
     const emotionSelect = document.getElementById('emotionSelect');
 
-    // Populate available voices
     let voices = [];
-    function populateVoices() {
+
+    // Function to load available voices
+    function loadVoices() {
       voices = speechSynthesis.getVoices();
       voiceSelect.innerHTML = '';
       voices.forEach((voice, index) => {
@@ -85,29 +92,41 @@
       });
     }
 
-    // Speak the text with selected options
+    // Speak text with selected options
     function speak() {
       const text = textInput.value;
       const selectedVoiceIndex = voiceSelect.value;
-      const selectedEmotion = emotionSelect.value;
+      const emotion = emotionSelect.value;
 
       if (!text) {
-        alert('Please enter some text.');
+        alert('Please enter some text to speak.');
         return;
       }
 
       const utterance = new SpeechSynthesisUtterance(text);
+
+      // Set voice
       if (voices[selectedVoiceIndex]) {
         utterance.voice = voices[selectedVoiceIndex];
       }
-      // Adjust pitch or rate for emotion (basic implementation)
-      if (selectedEmotion === 'happy') {
-        utterance.pitch = 1.5;
-      } else if (selectedEmotion === 'sad') {
-        utterance.rate = 0.8;
-      } else if (selectedEmotion === 'angry') {
-        utterance.pitch = 0.8;
-        utterance.rate = 1.2;
+
+      // Adjust pitch and rate based on emotion
+      switch (emotion) {
+        case 'happy':
+          utterance.pitch = 1.5;
+          utterance.rate = 1.2;
+          break;
+        case 'sad':
+          utterance.pitch = 0.8;
+          utterance.rate = 0.9;
+          break;
+        case 'angry':
+          utterance.pitch = 1.0;
+          utterance.rate = 1.5;
+          break;
+        default:
+          utterance.pitch = 1.0;
+          utterance.rate = 1.0;
       }
 
       speechSynthesis.speak(utterance);
@@ -121,8 +140,8 @@
     }
 
     // Load voices when ready
-    speechSynthesis.addEventListener('voiceschanged', populateVoices);
-    populateVoices();
+    speechSynthesis.addEventListener('voiceschanged', loadVoices);
+    loadVoices();
   </script>
 </body>
 </html>
