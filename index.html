@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Professional Text-to-Speech App</title>
+  <title>Advanced Text-to-Speech App</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -68,6 +68,10 @@
       background: #28a745;
     }
 
+    button#downloadBtn {
+      background: #0078d7;
+    }
+
     button#stopBtn {
       background: #dc3545;
     }
@@ -85,7 +89,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>🌟 Professional Text-to-Speech 🌟</h1>
+    <h1>🌟 Advanced Text-to-Speech 🌟</h1>
     <textarea id="text" placeholder="Type your text here..."></textarea>
     <select id="languageSelect">
       <option value="en-US">English (US)</option>
@@ -103,6 +107,7 @@
     </select>
     <div>
       <button id="speakBtn">🔊 Speak</button>
+      <button id="downloadBtn">⬇️ Download</button>
       <button id="stopBtn">❌ Stop</button>
     </div>
   </div>
@@ -115,9 +120,10 @@
     const languageSelect = document.getElementById("languageSelect");
     const emotionSelect = document.getElementById("emotionSelect");
     const speakBtn = document.getElementById("speakBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
     const stopBtn = document.getElementById("stopBtn");
 
-    const synth = window.speechSynthesis;
+    let audio = null;
 
     speakBtn.addEventListener("click", async () => {
       const text = textArea.value.trim();
@@ -139,15 +145,48 @@
       if (response.ok) {
         const audioBlob = await response.blob();
         const audioUrl = URL.createObjectURL(audioBlob);
-        const audio = new Audio(audioUrl);
+        audio = new Audio(audioUrl);
         audio.play();
       } else {
         alert("Error generating audio. Please try again later.");
       }
     });
 
+    downloadBtn.addEventListener("click", async () => {
+      const text = textArea.value.trim();
+      const language = languageSelect.value;
+      const emotion = emotionSelect.value;
+
+      if (!text) {
+        alert("Please enter text to download.");
+        return;
+      }
+
+      // Fetching audio for download
+      const response = await fetch('https://example.com/generate-audio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, language, emotion }),
+      });
+
+      if (response.ok) {
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        const link = document.createElement("a");
+        link.href = audioUrl;
+        link.download = "speech.mp3";
+        link.click();
+      } else {
+        alert("Error generating audio for download.");
+      }
+    });
+
     stopBtn.addEventListener("click", () => {
-      synth.cancel();
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
     });
   </script>
 </body>
