@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع تحويل النص إلى صوت</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>موقع تحويل النص إلى صوت</h1>
+        <p>أداة سهلة لتحويل النصوص إلى أصوات عالية الجودة</p>
+    </header>
+
+    <main>
+        <h2>أدخل النص لتحويله إلى صوت</h2>
+        <form id="textToSpeechForm">
+            <label for="text">النص:</label>
+            <textarea id="text" name="text" rows="5" placeholder="أدخل النص هنا..." required></textarea>
+            <button type="submit">تحويل إلى صوت</button>
+        </form>
+
+        <div id="results">
+            <h3>النتيجة:</h3>
+            <audio id="audioResult" controls>
+                <source src="" type="audio/mp3">
+                متصفحك لا يدعم تشغيل الصوت.
+            </audio>
+            <br>
+            <button id="downloadBtn">تحميل الصوت</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2024 جميع الحقوق محفوظة | موقع تحويل النص إلى صوت</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
