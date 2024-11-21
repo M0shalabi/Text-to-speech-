@@ -3,15 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text-to-Speech with Advanced Features</title>
+  <title>Advanced Text-to-Speech Tool</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #f9f9f9;
-      color: #333;
       margin: 0;
       padding: 0;
+      transition: background-color 0.3s, color 0.3s;
     }
     .container {
       max-width: 600px;
@@ -20,6 +18,7 @@
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s, color 0.3s;
     }
     h1 {
       font-size: 24px;
@@ -51,9 +50,33 @@
     button:hover {
       background-color: #0056b3;
     }
+    .dark-mode {
+      background-color: #333;
+      color: #fff;
+    }
+    .dark-mode .container {
+      background-color: #444;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    .toggle-dark-mode {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .toggle-dark-mode:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
+  <button class="toggle-dark-mode" onclick="toggleDarkMode()">🌙 Toggle Dark Mode</button>
   <div class="container">
     <h1>Advanced Text-to-Speech Tool</h1>
     <textarea id="text" placeholder="Type your text here..."></textarea>
@@ -137,6 +160,12 @@
       textInput.select();
       document.execCommand('copy');
       alert('Text copied to clipboard!');
+    }
+
+    // Toggle dark mode
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      document.querySelector('.container').classList.toggle('dark-mode');
     }
 
     // Load voices when ready
