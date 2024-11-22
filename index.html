@@ -23,30 +23,35 @@
             margin: 10px;
         }
     </style>
-    <script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_KEY"></script>
 </head>
 <body>
     <h1>تحويل النص إلى كلام</h1>
     <textarea id="text" rows="10" placeholder="أدخل النص هنا..."></textarea><br>
     <label for="voice">اختر الصوت:</label>
     <select id="voice">
-        <option value="Arabic Male">ذكر عربي</option>
-        <option value="Arabic Female">أنثى عربية</option>
-        <option value="UK English Male">ذكر إنجليزي (بريطاني)</option>
-        <option value="UK English Female">أنثى إنجليزية (بريطانية)</option>
-        <option value="US English Male">ذكر إنجليزي (أمريكي)</option>
-        <option value="US English Female">أنثى إنجليزية (أمريكية)</option>
-        <option value="French Male">ذكر فرنسي</option>
-        <option value="French Female">أنثى فرنسية</option>
+        <option value="ar-SA">العربية (السعودية)</option>
+        <option value="ar-EG">العربية (مصر)</option>
+        <option value="ar-KW">العربية (الكويت)</option>
+        <option value="ar-AE">العربية (الإمارات)</option>
         <!-- يمكنك إضافة المزيد من الخيارات هنا -->
     </select><br>
     <button onclick="speak()">تحويل النص إلى كلام</button>
+    <button onclick="downloadAudio()">تحميل الصوت</button>
 
     <script>
         function speak() {
             var text = document.getElementById('text').value;
             var voice = document.getElementById('voice').value;
-            responsiveVoice.speak(text, voice);
+            var url = `https://api.ttsmaker.com/v1/speak?text=${encodeURIComponent(text)}&lang=${voice}`;
+            var audio = new Audio(url);
+            audio.play();
+        }
+
+        function downloadAudio() {
+            var text = document.getElementById('text').value;
+            var voice = document.getElementById('voice').value;
+            var url = `https://api.ttsmaker.com/v1/speak?text=${encodeURIComponent(text)}&lang=${voice}&download=true`;
+            window.open(url, '_blank');
         }
     </script>
 </body>
