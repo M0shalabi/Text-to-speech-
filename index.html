@@ -3,55 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text-to-Speech</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Text-to-Speech App</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Text-to-Speech Converter</h1>
-    <button id="dark-mode-toggle">Toggle Dark Mode</button>
-  </header>
-  
-  <main>
-    <section id="text-input">
-      <label for="text">Enter your text:</label>
-      <textarea id="text" placeholder="Type something..."></textarea>
-    </section>
-
-    <section id="options">
-      <div>
-        <label for="language">Language:</label>
-        <select id="language">
-          <option value="en-US">English (US)</option>
-          <option value="en-UK">English (UK)</option>
-          <option value="ar-SA">Arabic (Saudi)</option>
-          <option value="ar-EG">Arabic (Egyptian)</option>
-        </select>
-      </div>
-      <div>
-        <label for="voice">Voice:</label>
-        <select id="voice">
-          <option value="default">Default</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-      </div>
-      <div>
-        <label for="emotion">Emotion:</label>
-        <select id="emotion">
-          <option value="neutral">Neutral</option>
-          <option value="happy">Happy</option>
-          <option value="sad">Sad</option>
-          <option value="angry">Angry</option>
-        </select>
-      </div>
-    </section>
-
-    <button id="convert-btn">Convert Text to Speech</button>
-    <audio id="audio-player" controls></audio>
-    <button id="download-btn" style="display:none;">Download Audio</button>
-  </main>
-
+  <div class="container">
+    <h1>Text-to-Speech App</h1>
+    <textarea id="text" placeholder="Enter your text here..."></textarea>
+    <select id="language">
+      <option value="Arabic Male">Arabic - Male</option>
+      <option value="Arabic Female">Arabic - Female</option>
+      <option value="UK English Male">English - UK (Male)</option>
+      <option value="UK English Female">English - UK (Female)</option>
+      <option value="US English Male">English - US (Male)</option>
+      <option value="US English Female">English - US (Female)</option>
+    </select>
+    <button id="convert-btn">Convert to Speech</button>
+    <button id="download-btn">Download Audio</button>
+  </div>
+  <script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_API_KEY"></script>
   <script src="script.js"></script>
 </body>
 </html>
