@@ -1,31 +1,51 @@
-import React, { useState } from 'react';
+// التبديل بين الوضع الليلي والعادي
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+darkModeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+});
 
-function TextToSpeech() {
-  const [text, setText] = useState('');
-  const [voice, setVoice] = useState('ar-EG-Standard-A'); // صوت عربي مصري
+// تحويل النص إلى صوت
+const convertButton = document.getElementById('convert-btn');
+const audioPlayer = document.getElementById('audio-player');
+const downloadButton = document.getElementById('download-btn');
 
-  const handleTextChange = (event) => {
-    setText(event.target.value);
-  };
+convertButton.addEventListener('click', async () => {
+  const text = document.getElementById('text').value;
+  const language = document.getElementById('language').value;
+  const voice = document.getElementById('voice').value;
+  const emotion = document.getElementById('emotion').value;
 
-  const handleVoiceChange = (event) => {
-    setVoice(event.target.value);
-  };
+  if (!text) {
+    alert('Please enter some text!');
+    return;
+  }
 
-  const handleSubmit = async () => {
-    // ... (بناء الطلب وإرساله إلى API)
-  };
+  try {
+    // استدعاء واجهة API لتحويل النص إلى صوت (مثال باستخدام خدمة Google Cloud)
+    const response = await fetch('https://api.example.com/text-to-speech', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ text, language, voice, emotion })
+    });
 
-  return (
-    <div>
-      <textarea value={text} onChange={handleTextChange} />
-      <select value={voice} onChange={handleVoiceChange}>
-        {/* خيارات الأصوات */}
-      </select>
-      <button onClick={handleSubmit}>تحويل</button>
-      <audio controls>
-        <source src={audioUrl} />
-      </audio>
-    </div>
-  );
-}
+    if (!response.ok) throw new Error('Failed to generate audio');
+
+    const blob = await response.blob();
+    const audioURL = URL.createObjectURL(blob);
+
+    // تشغيل الصوت
+    audioPlayer.src = audioURL;
+    audioPlayer.style.display = 'block';
+
+    // إعداد زر التحميل
+    downloadButton.href = audioURL;
+    downloadButton.download = 'speech.mp3';
+    downloadButton.style.display = 'block';
+
+  } catch (error) {
+    console.error(error);
+    alert('An error occurred while converting text to speech.');
+  }
+});
