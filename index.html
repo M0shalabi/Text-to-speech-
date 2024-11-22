@@ -1,58 +1,18 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحويل النص إلى كلام</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            padding: 20px;
-        }
-        textarea {
-            width: 80%;
-            margin: 10px 0;
-            padding: 10px;
-            font-size: 16px;
-        }
-        select, button {
-            padding: 10px;
-            font-size: 16px;
-            margin: 10px;
-        }
-    </style>
+  <title>محول نص إلى كلام</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>تحويل النص إلى كلام</h1>
-    <textarea id="text" rows="10" placeholder="أدخل النص هنا..."></textarea><br>
-    <label for="voice">اختر الصوت:</label>
-    <select id="voice">
-        <option value="ar-SA">العربية (السعودية)</option>
-        <option value="ar-EG">العربية (مصر)</option>
-        <option value="ar-KW">العربية (الكويت)</option>
-        <option value="ar-AE">العربية (الإمارات)</option>
-        <!-- يمكنك إضافة المزيد من الخيارات هنا -->
-    </select><br>
-    <button onclick="speak()">تحويل النص إلى كلام</button>
-    <button onclick="downloadAudio()">تحميل الصوت</button>
+  <h1>محول نص إلى كلام</h1>
+  <textarea id="inputText" placeholder="أدخل النص هنا"></textarea>
+  <select id="languageSelect">
+    <option value="ar-EG">العربية (مصر)</option>
+    </select>
+  <button onclick="convertTextToSpeech()">تحويل</button>
+  <audio id="audioPlayer" controls></audio>
 
-    <script>
-        function speak() {
-            var text = document.getElementById('text').value;
-            var voice = document.getElementById('voice').value;
-            var url = `https://api.ttsmaker.com/v1/speak?text=${encodeURIComponent(text)}&lang=${voice}`;
-            var audio = new Audio(url);
-            audio.play();
-        }
-
-        function downloadAudio() {
-            var text = document.getElementById('text').value;
-            var voice = document.getElementById('voice').value;
-            var url = `https://api.ttsmaker.com/v1/speak?text=${encodeURIComponent(text)}&lang=${voice}&download=true`;
-            window.open(url, '_blank');
-        }
-    </script>
+  <script src="script.js"></script>
 </body>
 </html>
